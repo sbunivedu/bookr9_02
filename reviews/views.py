@@ -5,6 +5,7 @@ logger = logging.getLogger('django')
 
 def index(request):
     logger.info("Hello from my_view!")
-    return HttpResponse("Hello, world!")
+    name = request.GET.get("name") or "world"
+    return HttpResponse("Hello, {}!".format(name))
 
 # views.py (or any other module)
