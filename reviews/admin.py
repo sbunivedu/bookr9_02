@@ -2,7 +2,7 @@ from django.contrib import admin
 from reviews.models import (Publisher, Contributor, Book, BookContributor, Review)
 
 class BookAdmin(admin.ModelAdmin):
-    list_display = ('title', 'isbn13')
+    list_display = ('title', 'isbn13', 'has_isbn')
     @admin.display(
         ordering='isbn',
         description='ISBN-13',
@@ -13,6 +13,14 @@ class BookAdmin(admin.ModelAdmin):
         return "{}-{}-{}-{}-{}".format(
             obj.isbn[0:3], obj.isbn[3:4], obj.isbn[4:6], obj.isbn[6:12], obj.isbn[12:13]
         )
+
+    @admin.display(
+        boolean = True,
+        description = 'Has ISBN',
+    )
+    def has_isbn(self, obj):
+        """ '9780316769174' => True """
+        return bool(obj.isbn)
 
 admin.site.register(Publisher)
 admin.site.register(Contributor)
