@@ -35,7 +35,9 @@ def initialled_name(self):
     return "{}, {}".format(self.last_names, initials)
 
 class ContributorAdmin(admin.ModelAdmin):
-    list_display = (initialled_name,)
+    list_display = ('last_names', 'first_names')
+    search_fields = ('last_names__startswith', 'first_names')
+    list_filter = ('last_names',)
 
 
 class ReviewAdmin(admin.ModelAdmin):
