@@ -3,6 +3,16 @@ from reviews.models import (Publisher, Contributor, Book, BookContributor, Revie
 
 class BookAdmin(admin.ModelAdmin):
     list_display = ('title', 'isbn13')
+    @admin.display(
+        ordering='isbn',
+        description='ISBN-13',
+        empty_value='-/-'
+    )
+    def isbn13(self, obj):
+        """ '9780316769174' => '978-0-31-676917-4' """
+        return "{}-{}-{}-{}-{}".format(
+            obj.isbn[0:3], obj.isbn[3:4], obj.isbn[4:6], obj.isbn[6:12], obj.isbn[12:13]
+        )
 
 admin.site.register(Publisher)
 admin.site.register(Contributor)
