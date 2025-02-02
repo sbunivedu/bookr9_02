@@ -3,6 +3,8 @@ from reviews.models import (Publisher, Contributor, Book, BookContributor, Revie
 
 class BookAdmin(admin.ModelAdmin):
     list_display = ('title', 'isbn13', 'has_isbn')
+    date_hierarchy = 'publication_date'
+    list_filter = ('publisher', "publication_date")
     @admin.display(
         ordering='isbn',
         description='ISBN-13',
