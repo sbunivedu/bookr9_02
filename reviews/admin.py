@@ -25,8 +25,26 @@ class BookAdmin(admin.ModelAdmin):
         """ '9780316769174' => True """
         return bool(obj.isbn)
 
+def initialled_name(self):
+    """ self.first_names='Jerome David',
+    self.last_names='Salinger'
+    => 'Salinger, JD' """
+
+    initials = ''.join([name[0] for name
+        in self.first_names.split(' ')])
+    return "{}, {}".format(self.last_names, initials)
+
+class ContributorAdmin(admin.ModelAdmin):
+    list_display = (initialled_name,)
+
+
+class ReviewAdmin(admin.ModelAdmin):
+    fieldsets = (('Linkage', {'fields': ('creator', 'book')}),
+                 ('Review content',
+                  {'fields': ('content', 'rating')}))
+
 admin.site.register(Publisher)
-admin.site.register(Contributor)
+admin.site.register(Contributor, ContributorAdmin)
 admin.site.register(Book, BookAdmin)
 admin.site.register(BookContributor)
-admin.site.register(Review)
+admin.site.register(Review, ReviewAdmin)
