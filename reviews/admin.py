@@ -5,6 +5,7 @@ class BookAdmin(admin.ModelAdmin):
     list_display = ('title', 'isbn13', 'has_isbn')
     date_hierarchy = 'publication_date'
     list_filter = ('publisher', "publication_date")
+    search_fields = ('title', 'isbn', 'publisher__name')
     @admin.display(
         ordering='isbn',
         description='ISBN-13',
