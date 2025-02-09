@@ -140,4 +140,5 @@ LOGGING = {
     },
 }
 
+STATICFILES_DIRS = [BASE_DIR / "static"]
 # settings.py
