@@ -13,6 +13,9 @@ def book_search(request):
     form = SearchForm(request.GET)
     books = set()
 
+    print(f"form.is_valid()=>{form.is_valid()}")
+    print(f"form.cleaned_data['search']=>{form.cleaned_data['search']}")
+
     if form.is_valid() and form.cleaned_data["search"]:
         search = form.cleaned_data["search"]
         books = Book.objects.filter(title__icontains=search)
