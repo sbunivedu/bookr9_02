@@ -1,17 +1,16 @@
+from io import BytesIO
+
+from PIL import Image
 from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test, permission_required, login_required
+from django.core.exceptions import PermissionDenied
+from django.core.files.images import ImageFile
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
-
-from io import BytesIO
-from PIL import Image
-from django.core.files.images import ImageFile
 
 from .forms import SearchForm, PublisherForm, ReviewForm, BookMediaForm
 from .models import Book, Contributor, Publisher, Review
 from .utils import average_rating
-
-
-
 def index(request):
     return render(request, "base.html")
 
@@ -83,7 +82,10 @@ def book_detail(request, pk):
         context = {"book": book, "book_rating": None, "reviews": None}
     return render(request, "reviews/book_detail.html", context)
 
+def is_staff_user(user):
+    return user.is_staff
 
+@user_passes_test(is_staff_user)
 def publisher_edit(request, pk=None):
     if pk is not None:
         publisher = get_object_or_404(Publisher, pk=pk)
@@ -118,6 +120,7 @@ def publisher_edit(request, pk=None):
         },
     )
 
+@login_required
 def review_create(request, book_pk):
     book = get_object_or_404(Book, pk=book_pk)
     if request.method == "POST":
@@ -142,7 +145,7 @@ def review_create(request, book_pk):
             "related_model_type": "Book",
         },
     )
-
+@login_required
 def review_edit(request, book_pk, review_pk):
     book = get_object_or_404(Book, pk=book_pk)
     review = get_object_or_404(Review, book_id=book_pk, pk=review_pk)

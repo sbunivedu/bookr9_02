@@ -3,6 +3,8 @@ from django.conf.urls.static import static
 from django.contrib import admin, auth
 from django.urls import include, path
 import reviews.views
+from bookr.views import profile
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path(
@@ -18,6 +20,7 @@ urlpatterns = [
         auth.views.PasswordResetCompleteView.as_view(),
         name="password_reset_complete",
     ),
+    path('accounts/profile/', profile, name='profile'),
     path("", reviews.views.index),
     path("book-search/", reviews.views.book_search, name="book_search"),
     path("", include("reviews.urls")),
